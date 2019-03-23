@@ -26,7 +26,8 @@ end
 def print(students)
   students.each_with_index do |student, index|
     indexstartat1 = index + 1
-      if student[:name].chr == "J"
+      #if student[:name].chr == "J" &&
+      if student[:name].length < 12 
         puts "#{indexstartat1}. #{student[:name]} #{student[:cohort]} cohort"
       end
   end
