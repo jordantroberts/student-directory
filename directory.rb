@@ -1,6 +1,8 @@
 def input_students
   students = []
- 
+
+
+
   loop do
     puts "Please enter the names of the students"
     puts "To finish, just hit return twice"
@@ -10,6 +12,9 @@ def input_students
     cohort = gets.chomp
     puts "Please enter student's country of birth"
     country = gets.chomp
+      if country.empty?
+      country = "UNKNOWN"
+      end
     students << {name: name, cohort: cohort, country: country}
     puts "Now we have #{students.count} students"
     end
