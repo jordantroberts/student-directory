@@ -13,10 +13,13 @@ def input_students
     puts "Please enter student's country of birth"
     country = gets.chomp
       if country.empty?
-      country = "UNKNOWN"
+      country = "somewhere in the world"
       end
     students << {name: name, cohort: cohort, country: country}
+    if students.count > 1
     puts "Now we have #{students.count} students"
+    elsif puts "Now we have 1 student"
+    end
     end
     students
   end
