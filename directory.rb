@@ -23,6 +23,7 @@ def print_menu
   puts "1. Input the students"
   puts "2. Show the students"
   puts "3. Save the list to students.csv"
+  puts "4. Load the list from the students.csv"
   puts "9. Exit" #9 because we will be adding more items
 end
 
@@ -44,6 +45,16 @@ def save_students
   file.close # every time you open a file, it needs to be closed
 end
 
+def load_students # If we have data saved to file, we can load it at startup, so we don't need to input all the students again. The loading procedure is the reverse of the saving procedure above.
+  file = File.open("students.csv", "r") # Open the file for reading
+  file.readlines.each do |line| #Iterate over all of the lines, split every line at the comma and put a new hash into the array @students.
+  name, cohort = line.chomp.split(',') #On every iteration we discard the training new line character from the line, split it at the comma (this will give us an array with two elements), and assign it to the name and cohort variables. We are also doing a parallel assignment here - that is, assigning two variables at the same time. If the assigned value is an array, then the first variable will get the first value of the array, the second variable will get the second value and so on.
+    @students << {name: name, cohort: cohort.to_sym} # Once we have the name and cohort, we createa  new hash and put it into the list of students.
+    # The only thing different from the input_students method that does the same operation is that here we are converting a string that we read from the file to a symbol - this is for consistency. If we decided to store the cohort as a symbol, we shouldn't change the format.
+  end
+  file.close # finally, we close the file.
+end
+
 def process(selection)
   case selection
   when "1"
@@ -52,6 +63,8 @@ def process(selection)
     show_students
   when "3"
     save_students
+  when "4"
+    load_students
   when "9"
     exit
   else
