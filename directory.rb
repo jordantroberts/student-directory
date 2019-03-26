@@ -10,12 +10,12 @@ def input_students
     break if name.empty?
     puts "Please enter the cohort"
     cohort = gets.chomp
-    puts "Please enter student's country of birth"
-    country = gets.chomp
-      if country.empty?
-      country = "somewhere in the world"
-      end
-    students << {name: name, cohort: cohort, country: country}
+   # puts "Please enter student's country of birth"
+   # country = gets.chomp
+     # if country.empty?
+      #country = "somewhere in the world"
+      #end
+    students << {name: name, cohort: cohort}
     if students.count > 1
     puts "Now we have #{students.count} students"
     elsif puts "Now we have 1 student"
@@ -28,14 +28,21 @@ def print_header
   puts "The students of Villains Academy".center(50)
   puts "-----------".center(50)
 end
+
 def print(students)
-  students.each_with_index do |student, index|
-    indexstartat1 = index + 1
-      #if student[:name].chr == "J" &&
-      #if student[:name].length < 12
-        puts "#{indexstartat1}. #{student[:name]}, #{student[:cohort]} cohort, born in #{student[:country]}"
-      end
+students.group_by { |student| student.class }
+students_by_cohort = {}
+students.map do |student|
+  name = student[:name]
+  cohort = student[:cohort]
+if students_by_cohort[cohort] == nil
+  students_by_cohort[cohort] = []
   end
+  students_by_cohort[cohort].push(student[:name])
+  end
+  puts students_by_cohort.to_a
+end
+
 def print_footer(names)
   puts "Overall, we have #{names.count} great students".center(50)
 end
