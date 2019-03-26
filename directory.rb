@@ -22,6 +22,7 @@ end
 def print_menu
   puts "1. Input the students"
   puts "2. Show the students"
+  puts "3. Save the list to students.csv"
   puts "9. Exit" #9 because we will be adding more items
 end
 
@@ -31,12 +32,26 @@ def show_students
   print_footer
 end
 
+def save_students
+  #open the file for writing
+  file = File.open("students.csv","w") # write only - creates a new file for writing
+  #iterate over the array of students
+  @students.each do |student|
+    student_data = [student[:name], student[:cohort]] #on every iteration we create a new array with student's name and cohort - the info we want to save to the file. We do this in order to convert it to a comma-separated string on the next line.
+    csv_line = student_data.join(",") #this method joins all the elements of the array it's called on together, using it's argument as a separator.
+    file.puts csv_line #finally, we write the csv line to the file using the familar puts method, except we call it on a file, so it writes to the file and not on the screen.
+  end
+  file.close # every time you open a file, it needs to be closed
+end
+
 def process(selection)
   case selection
   when "1"
     input_students
   when "2"
     show_students
+  when "3"
+    save_students
   when "9"
     exit
   else
@@ -58,5 +73,7 @@ end
 def print_footer
   puts "Overall, we have #{@students.count} great students".center(50)
 end
+
+
 
 interactive_menu
