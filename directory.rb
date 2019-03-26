@@ -1,5 +1,37 @@
-# Set an instance variable that can be recognised across methods
+# Set an instance variable that can be accessed across methods
 @students = []
+
+def print_menu
+  puts "1. Input the students"
+  puts "2. Show the students"
+  puts "3. Save the list to students.csv"
+  puts "4. Load the list from the students.csv"
+  puts "9. Exit" #9 because we will be adding more items
+end
+
+def interactive_menu
+  loop do
+    print_menu
+    process(STDIN.gets.chomp) # Note that we are passing the user selection as an argument to the method.
+  end
+end
+
+def process(selection)
+  case selection
+  when "1"
+    input_students
+  when "2"
+    show_students
+  when "3"
+    save_students
+  when "4"
+    load_students
+  when "9"
+    exit
+  else
+    puts "I don't know what you mean, try again"
+  end
+end
 
 def input_students
   puts "Please enter the names of the students"
@@ -12,25 +44,25 @@ def input_students
   end
 end
 
-def interactive_menu
-  loop do
-    print_menu
-    process(STDIN.gets.chomp) # Note that we are passing the user selection as an argument to the method.
-  end
-end
-
-def print_menu
-  puts "1. Input the students"
-  puts "2. Show the students"
-  puts "3. Save the list to students.csv"
-  puts "4. Load the list from the students.csv"
-  puts "9. Exit" #9 because we will be adding more items
-end
-
 def show_students
   print_header
   print_students_list
   print_footer
+end
+
+def print_header
+  puts "The students of Villains Academy".center(50)
+  puts "-----------".center(50)
+end
+
+def print_students_list
+  @students.each do |student|
+  puts "#{student[:name]} (#{student[:cohort]} cohort)"
+  end
+end
+
+def print_footer
+  puts "Overall, we have #{@students.count} great students".center(50)
 end
 
 def save_students
@@ -65,38 +97,6 @@ def try_load_students
     puts "Sorry #{filename} doesn't exist."
     exit
   end
-end
-
-def process(selection)
-  case selection
-  when "1"
-    input_students
-  when "2"
-    show_students
-  when "3"
-    save_students
-  when "4"
-    load_students
-  when "9"
-    exit
-  else
-    puts "I don't know what you mean, try again"
-  end
-end
-
-def print_header
-  puts "The students of Villains Academy".center(50)
-  puts "-----------".center(50)
-end
-
-def print_students_list
-  @students.each do |student|
-  puts "#{student[:name]} (#{student[:cohort]} cohort)"
-  end
-end
-
-def print_footer
-  puts "Overall, we have #{@students.count} great students".center(50)
 end
 
 
