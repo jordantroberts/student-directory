@@ -4,18 +4,18 @@
 def input_students
   puts "Please enter the names of the students"
   puts "To finish, just hit return twice"
-  name = gets.chomp
+  name = STDIN.gets.chomp
   while !name.empty? do
     @students << {name: name, cohort: :november} # Inside the block we know that the name is not empty (otherwise it woudn't be executed at all). Then we add a new hash to the array with the value of the name the user entered corresponding to the :name key. The value of the cohort is hardcoded.
     puts "Now we have #{@students.count} students"
-    name = gets.chomp
+    name = STDIN.gets.chomp
   end
 end
 
 def interactive_menu
   loop do
     print_menu
-    process(gets.chomp) # Note that we are passing the user selection as an argument to the method.
+    process(STDIN.gets.chomp) # Note that we are passing the user selection as an argument to the method.
   end
 end
 
@@ -45,7 +45,7 @@ def save_students
   file.close # every time you open a file, it needs to be closed
 end
 
-def load_students # If we have data saved to file, we can load it at startup, so we don't need to input all the students again. The loading procedure is the reverse of the saving procedure above.
+def load_students(filename = "students.csv") # If we have data saved to file, we can load it at startup, so we don't need to input all the students again. The loading procedure is the reverse of the saving procedure above.
   file = File.open("students.csv", "r") # Open the file for reading
   file.readlines.each do |line| #Iterate over all of the lines, split every line at the comma and put a new hash into the array @students.
   name, cohort = line.chomp.split(',') #On every iteration we discard the training new line character from the line, split it at the comma (this will give us an array with two elements), and assign it to the name and cohort variables. We are also doing a parallel assignment here - that is, assigning two variables at the same time. If the assigned value is an array, then the first variable will get the first value of the array, the second variable will get the second value and so on.
@@ -53,6 +53,18 @@ def load_students # If we have data saved to file, we can load it at startup, so
     # The only thing different from the input_students method that does the same operation is that here we are converting a string that we read from the file to a symbol - this is for consistency. If we decided to store the cohort as a symbol, we shouldn't change the format.
   end
   file.close # finally, we close the file.
+end
+
+def try_load_students
+  filename = ARGV.first # first argument from the command line
+  return if filename.nil? # get out of the method if it isn't given
+  if File.exists?(filename) #if it exists
+    load_students(filename)
+    puts "Loaded #{@students.count} from #{filename}"
+  else # if it doesn't exist
+    puts "Sorry #{filename} doesn't exist."
+    exit
+  end
 end
 
 def process(selection)
@@ -88,5 +100,5 @@ def print_footer
 end
 
 
-
+try_load_students
 interactive_menu
