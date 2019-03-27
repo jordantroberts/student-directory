@@ -1,6 +1,4 @@
-#After we added the code to load the students from file, we ended up with adding the students to @students in two places.
-#The lines in load_students() and  input_students() are almost the same.
-#This violates the DRY (Don't Repeat Yourself) principle. How can you extract them into a method to fix this problem?
+#How could you make the program load students.csv by default if no file is given on startup? Which methods would you need to change?
 
 @students = []
 
@@ -36,7 +34,7 @@ def process(selection)
   end
 end
 
-#Extracted to a method 
+#Extracted to a method
 def add_students(name)
   @students << {name: name, cohort: :november}
 end
@@ -83,7 +81,7 @@ def save_students
   file.close
 end
 
-def load_students(filename = "students.csv")
+def load_students#(filename = "students.csv")
   file = File.open("students.csv", "r")
   file.readlines.each do |line|
   name, cohort = line.chomp.split(',')
@@ -93,10 +91,13 @@ def load_students(filename = "students.csv")
   file.close
 end
 
+#Method changed:
 def try_load_students
   filename = ARGV.first
-  return if filename.nil?
-  if File.exists?(filename)
+  if filename.nil?
+    load_students
+    puts "Loaded default student file"
+  elsif File.exists?(filename)
     load_students(filename)
     puts "Loaded #{@students.count} from #{filename}"
   else
