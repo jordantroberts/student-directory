@@ -10,19 +10,19 @@ def print_menu
   puts "9. Exit"
 end
 
-def interactive_menu
+def display_interactive_menu
   loop do
     print_menu
-    process(STDIN.gets.chomp)
+    user_choice(STDIN.gets.chomp) #passing the user selection as an argument to the method
   end
 end
 
-def process(selection)
+def user_choice(selection) # starts with a case statement definition and takes the variable you're going to work with.
   case selection
   when "1"
-    input_students
+    input_students_details
   when "2"
-    show_students
+    show_students_list
   when "3"
     save_students
   when "4"
@@ -34,23 +34,21 @@ def process(selection)
   end
 end
 
-#Extracted to a method
-def add_students(name)
+def add_students_to_list(name)
   @students << {name: name, cohort: :november}
 end
 
-def input_students
-  puts "Please enter the names of the students"
-  puts "To finish, just hit return twice"
+def input_students_details
+  puts "Please enter the names of the students. To finish, just hit return twice."
   name = STDIN.gets.chomp
-  while !name.empty? do
-    #@students << {name: name, cohort: :november}
-    add_students(name)
+  until name.empty? do
+    add_students_to_list(name)
+    puts "We currently have #{@students.count} students"
     name = STDIN.gets.chomp
   end
 end
 
-def show_students
+def show_students_list
   print_header
   print_students_list
   print_footer
@@ -81,17 +79,15 @@ def save_students
   file.close
 end
 
-def load_students#(filename = "students.csv")
+def load_students
   file = File.open("students.csv", "r")
   file.readlines.each do |line|
   name, cohort = line.chomp.split(',')
-    #@students << {name: name, cohort: :november}
-    add_students(name)
+    add_students_to_list(name)
   end
   file.close
 end
 
-#Method changed:
 def try_load_students
   filename = ARGV.first
   if filename.nil?
@@ -108,4 +104,4 @@ end
 
 
 try_load_students
-interactive_menu
+display_interactive_menu
