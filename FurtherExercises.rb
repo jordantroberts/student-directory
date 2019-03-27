@@ -20,12 +20,16 @@ end
 def user_choice(selection) # starts with a case statement definition and takes the variable you're going to work with.
   case selection
   when "1"
+    puts "You selected option 1"
     input_students_details
   when "2"
+    puts "You selected option 2"
     show_students_list
   when "3"
+    puts "Student data saved"
     save_students
   when "4"
+    puts "Student data loaded" 
     load_students
   when "9"
     exit
