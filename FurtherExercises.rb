@@ -1,5 +1,9 @@
-#The filename we use to save and load data (menu items 3 and 4) is hardcoded.
-#Make the script more flexible by asking for the filename if the user chooses these menu items.
+#We are opening and closing the files manually. Read the documentation of the File class
+#to find out how to use a code block (do...end) to access a file, so that we didn't have to
+#close it explicitly (it will be closed automatically when the block finishes).
+#Refactor the code to use a code block.
+
+
 
 @students = []
 
@@ -74,29 +78,40 @@ def print_footer
   puts "Overall, we have #{@students.count} great students".center(50)
 end
 
+#def save_students
+#  puts "Please enter the file you would like to save the data to"
+#  filename = gets.chomp
+  #file = File.open(filename,"w")
+  #@students.each do |student|
+  #  student_data = [student[:name], student[:cohort]]
+  #  csv_line = student_data.join(",")
+  #  file.puts csv_line
+  #end
+  #file.close
+  #puts "File saved"
+#end
+
 def save_students
   puts "Please enter the file you would like to save the data to"
   filename = gets.chomp
-  file = File.open(filename,"w")
-  @students.each do |student|
-    student_data = [student[:name], student[:cohort]]
-    csv_line = student_data.join(",")
-    file.puts csv_line
+  file = File.open(filename,"w") do |file|
+    @students.each do |student|
+      student_data = [student[:name], student[:cohort]]
+      csv_line = student_data.join(",")
+      file.puts csv_line
+    end
   end
-  file.close
-  puts "File saved"
 end
 
 def load_students
   puts "Please enter a file you would like to load"
   filename = gets.chomp
-  file = File.open(filename, "r")
-  file.readlines.each do |line|
-    name, cohort = line.chomp.split(',')
-    add_students_to_list(name)
-  end
-  file.close
-  puts "File loaded"
+  file = File.open(filename, "r") do |file|
+    file.readlines.each do |line|
+      name, cohort = line.chomp.split(',')
+      add_students_to_list(name)
+    end
+  end 
 end
 
 def try_load_students
