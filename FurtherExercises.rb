@@ -1,12 +1,13 @@
-#How could you make the program load students.csv by default if no file is given on startup? Which methods would you need to change?
+#The filename we use to save and load data (menu items 3 and 4) is hardcoded.
+#Make the script more flexible by asking for the filename if the user chooses these menu items.
 
 @students = []
 
 def print_menu
   puts "1. Input the students"
   puts "2. Show the students"
-  puts "3. Save the list to students.csv"
-  puts "4. Load the list from the students.csv"
+  puts "3. Save the list"
+  puts "4. Load the list"
   puts "9. Exit"
 end
 
@@ -29,7 +30,7 @@ def user_choice(selection) # starts with a case statement definition and takes t
     puts "Student data saved"
     save_students
   when "4"
-    puts "Student data loaded" 
+    puts "Student data loaded"
     load_students
   when "9"
     exit
@@ -74,22 +75,28 @@ def print_footer
 end
 
 def save_students
-  file = File.open("students.csv","w")
+  puts "Please enter the file you would like to save the data to"
+  filename = gets.chomp
+  file = File.open(filename,"w")
   @students.each do |student|
     student_data = [student[:name], student[:cohort]]
     csv_line = student_data.join(",")
     file.puts csv_line
   end
   file.close
+  puts "File saved"
 end
 
 def load_students
-  file = File.open("students.csv", "r")
+  puts "Please enter a file you would like to load"
+  filename = gets.chomp
+  file = File.open(filename, "r")
   file.readlines.each do |line|
-  name, cohort = line.chomp.split(',')
+    name, cohort = line.chomp.split(',')
     add_students_to_list(name)
   end
   file.close
+  puts "File loaded"
 end
 
 def try_load_students
