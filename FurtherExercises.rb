@@ -99,14 +99,19 @@ end
 def load_students
   puts "Please enter a file you would like to load"
   filename = gets.chomp
-  file = File.open(filename, "r") do |file|
-    file.readlines.each do |line|
-      name, cohort = line.chomp.split(',')
-      add_students_to_list(name)
-    end
-  end
+  CSV.read(filename)
 end
-
+  
+#def load_students
+#  puts "Please enter a file you would like to load"
+#  filename = gets.chomp
+#  file = File.open(filename, "r") do |file|
+#    file.readlines.each do |line|
+#      name, cohort = line.chomp.split(',')
+#      add_students_to_list(name)
+  #  end
+#  end
+#
 def try_load_students
   filename = ARGV.first
   if filename.nil?
