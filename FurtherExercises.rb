@@ -1,9 +1,5 @@
-#We are opening and closing the files manually. Read the documentation of the File class
-#to find out how to use a code block (do...end) to access a file, so that we didn't have to
-#close it explicitly (it will be closed automatically when the block finishes).
-#Refactor the code to use a code block.
-
-
+#Refactor using CSV Library
+require 'csv'
 
 @students = []
 
@@ -81,24 +77,21 @@ end
 #def save_students
 #  puts "Please enter the file you would like to save the data to"
 #  filename = gets.chomp
-  #file = File.open(filename,"w")
-  #@students.each do |student|
-  #  student_data = [student[:name], student[:cohort]]
-  #  csv_line = student_data.join(",")
-  #  file.puts csv_line
-  #end
-  #file.close
-  #puts "File saved"
+#  file = File.open(filename,"w") do |file|
+#    @students.each do |student|
+#      student_data = [student[:name], student[:cohort]]
+#      csv_line = student_data.join(",")
+#      file.puts csv_line
+#    end
+#  end
 #end
 
 def save_students
   puts "Please enter the file you would like to save the data to"
   filename = gets.chomp
-  file = File.open(filename,"w") do |file|
+  CSV.open(filename,"wb") do |csv|
     @students.each do |student|
-      student_data = [student[:name], student[:cohort]]
-      csv_line = student_data.join(",")
-      file.puts csv_line
+      csv << [student[:name], student[:cohort]]#.join(",") #Don't need join, csv will do it for me!
     end
   end
 end
@@ -111,7 +104,7 @@ def load_students
       name, cohort = line.chomp.split(',')
       add_students_to_list(name)
     end
-  end 
+  end
 end
 
 def try_load_students
