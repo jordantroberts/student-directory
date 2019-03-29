@@ -14,4 +14,4 @@ end
 
 sourcecode
 
-# £0 Contains the name of the script being executed. May be assignable.
+# $0 Contains the name of the script being executed. May be assignable.
